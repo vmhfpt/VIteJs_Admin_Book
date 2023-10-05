@@ -15,5 +15,8 @@ class ProductService {
     async delete(id){
         return await ProductApi.deleteById(id);
     }
+    async getByFilter(data){
+        return await ProductApi.getProductByFilter(data);
+    }
 }
 export default new ProductService();

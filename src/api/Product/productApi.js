@@ -9,7 +9,7 @@ import axiosClient  from "../config.js";
       return axiosClient.post(url, data);
     },
     getById : (id) => {
-      const url = '/products/' + id;
+      const url = '/products/' + `${id}` ;
       return axiosClient.get(url);
     },
     updateById : (data) => {
@@ -19,6 +19,10 @@ import axiosClient  from "../config.js";
     deleteById : (id) => {
       const url = '/products/' + id;
       return axiosClient.delete(url);
+    },
+    getProductByFilter : (params) => {
+      const url = '/products';
+      return axiosClient.get(url, { params: params });
     }
     
  }
