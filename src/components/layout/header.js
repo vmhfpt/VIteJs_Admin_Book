@@ -2,7 +2,7 @@ export default async function Header(){
   
     setTimeout(function(){
       getTotalCart(JSON.parse(localStorage.getItem("carts")));
-    }, 100);
+    }, 900);
     return (`
     <header class="z-[9999]"> 
       <div class=" border-b-[2px] border-[#f3f3f3]"> 

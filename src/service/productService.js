@@ -18,5 +18,11 @@ class ProductService {
     async getByFilter(data){
         return await ProductApi.getProductByFilter(data);
     }
+    async getDetailProduct(id){
+        return await ProductApi.getDetail(id);
+    }
+    async getProductSuggest(param){
+        return await ProductApi.getProductSuggest(param);
+    }
 }
 export default new ProductService();

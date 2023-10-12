@@ -1,14 +1,15 @@
 import axios from 'axios';
 import orderService from '../service/orderService';
 import orderDetailService from '../service/orderDetailService';
+import { validateEmail, validateName, validatePhoneNumber } from '../service/validateService';
 import { v4 as uuidv4 } from 'uuid';
 export default async function Checkout(){
+    var checkName = false, checkAddress = false, checkEmail = false, checkPhoneNumber = false;
     var arrCart = JSON.parse(localStorage.getItem("carts"));
     var totalPrice = 0;
     function handleRequest() {
         axios.get("https://provinces.open-api.vn/api/").then(function (response) {
             response.data.map((item, key) => {
-            
                 $('#show-provinces').append(`<option value="${item.code}" > ${item.name}</option>`)
             })
         })
@@ -56,53 +57,55 @@ export default async function Checkout(){
 
 
     window.submitOrder = (thisData) => {
-    
-        $(thisData).prop('disabled', true);
-        $(thisData).html(`<i class=" fa fa-spinner fa-spin"></i>`);
-        let name = $("#name-order").val();
-        let email = $("#email-order").val();
-        let phoneNumber = $("#phone-order").val();
-        let note = $("#note-order").val();
-        let fullAddress = $("#address-order").val();
-        let province = $("#show-provinces").children("option").filter(":selected").text();
-        let district = $("#show-districts").children("option").filter(":selected").text();
-        let ward = $("#show-wards").children("option").filter(":selected").text();
-        var currentdate = new Date(); 
-        var datetime = currentdate.getFullYear() + "-"
-                + (currentdate.getMonth()+1)  + "-" 
-                + currentdate.getDate() + " "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-        var idOrder = uuidv4();
-        let dataUser = {
-            id : idOrder,
-            name,
-            email,
-            phone_number : phoneNumber,
-            note,
-            address : `${fullAddress}, ${ward}, ${district}, ${province}`,
-            status : 6,
-            createdAt : datetime
-        }
-        var arrCart = JSON.parse(localStorage.getItem("carts"));
-        orderService.create(dataUser).then(async (data) => {
-            return await Promise.all(arrCart.map(async (result) => {
-                let orderDetailID = uuidv4();
-                orderDetailService.create({
-                    id : orderDetailID,
-                    order_id : idOrder,
-                    price : result.price,
-                    product_id : result.product_id,
-                    quantity : result.quantity
-                })
-            })).then(() => {
+        if(checkAddress && checkEmail && checkName && checkPhoneNumber){
+            $(thisData).prop('disabled', true);
+            $(thisData).html(`<i class=" fa fa-spinner fa-spin"></i>`);
+            let name = $("#name-order").val();
+            let email = $("#email-order").val();
+            let phoneNumber = $("#phone-order").val();
+            let note = $("#note-order").val();
+            let fullAddress = $("#address-order").val();
+            let province = $("#show-provinces").children("option").filter(":selected").text();
+            let district = $("#show-districts").children("option").filter(":selected").text();
+            let ward = $("#show-wards").children("option").filter(":selected").text();
+            var currentdate = new Date(); 
+            var datetime = currentdate.getFullYear() + "-"
+                    + (currentdate.getMonth()+1)  + "-" 
+                    + currentdate.getDate() + " "  
+                    + currentdate.getHours() + ":"  
+                    + currentdate.getMinutes() + ":" 
+                    + currentdate.getSeconds();
+        
+            let dataUser = {
+                name,
+                email,
+                phone_number : phoneNumber,
+                note,
+                address : `${fullAddress}, ${ward}, ${district}, ${province}`,
+                status : 6,
+                createdAt : datetime
+            }
+            var arrCart = JSON.parse(localStorage.getItem("carts"));
+        
+            
+
+            orderService.create(dataUser).then(async (data) => {
+                
+                return await Promise.all(arrCart.map(async (result) => {
+                    
+                    orderDetailService.create({
+                        order_id : data._id,
+                        price : result.price,
+                        product_id : result.id,
+                        quantity : result.quantity
+                    })
+                })).then(() => {
                 showPopupOrder(dataUser, JSON.parse(localStorage.getItem("carts")));
                 localStorage.setItem("carts", JSON.stringify([]));
+                })
+                
             })
-            
-        })
-        
+        }
     }
     function showPopupOrder(dataUser, dataCart){
         $('.app__nav').html(`<div class="flex flex-col gap-4 pb-[50px] container my-8">
@@ -199,7 +202,20 @@ export default async function Checkout(){
             }
         });
     }
-    return (`
+    window.handleInputName = (thisData) => {
+        checkName = validateName({target: $(thisData), name : 'Name'}, $('.error-name'));
+    }
+    window.handleInputEmail = (thisData) => {
+        checkEmail = validateEmail(thisData, $('.error-email'));
+    }
+    window.handleInputPhone = (thisData) => {
+        checkPhoneNumber = validatePhoneNumber(thisData, $('.error-phone'));
+    }
+    window.handleInputAddress = (thisData) => {
+        checkAddress = validateName({target: $(thisData), name : 'Address'}, $('.error-address'));
+    }
+  
+    return ( /*html */`
         <div class="container app__nav" >
              <div class="flex">
                     <div class="w-1/2 flex flex-col gap-5 px-10 py-[70px]">
@@ -219,9 +235,18 @@ export default async function Checkout(){
                              </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <div class=" w-full"><input class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="text" placeholder="Enter name" id="name-order" /></div>
-                            <div class="w-full"><input class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="email" placeholder="Enter email" id="email-order" /></div>
-                            <div class="col-span-2 w-full"><input class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="text" placeholder="Enter phone number" id="phone-order" /></div>
+                            <div class=" w-full">
+                              <input oninput="handleInputName(this)"  class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="text" placeholder="Enter name" id="name-order" />
+                              <span class="text-red-500 text-[14px] error-name" > * Name is Required</span>
+                            </div>
+                            <div class="w-full">
+                              <input oninput="handleInputEmail(this)" class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="email" placeholder="Enter email" id="email-order" />
+                              <span class="text-red-500 text-[14px] error-email" > * Email is Required</span>
+                            </div>
+                            <div class="col-span-2 w-full">
+                               <input oninput="handleInputPhone(this)" class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="text" placeholder="Enter phone number" id="phone-order" />
+                               <span class="text-red-500 text-[14px] error-phone" > * Phone number is Required</span>
+                            </div>
                             <div class="w-full">
                                 <select onchange="showProvince(this);" id="show-provinces" class="bg-white text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]">
                                     <option value="0" class="">-- Select city --</option>
@@ -237,7 +262,10 @@ export default async function Checkout(){
                                      <option value="0" class="">-- Select ward -- </option>
                                 </select>
                             </div>
-                            <div class=" col-span-2 w-full"><input class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="text" placeholder="Enter address" id="address-order" /></div>
+                            <div class=" col-span-2 w-full">
+                               <input oninput="handleInputAddress(this)" class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="text" placeholder="Enter address" id="address-order" />
+                               <span class="text-red-500 text-[14px] error-address" > * Address is Required</span>
+                            </div>
                             <div class="col-span-2 w-full"><input class="text-[14px] py-3 px-4 w-full border-[1px] border-[#eeeeee]" type="text" placeholder="Enter note" id="note-order" /></div>
                             <div class="col-span-2 w-full flex items-center gap-3 text-[15px]"> <input type="checkbox" /> <label>Save information for next time</label> </div>
                             <div class="py-6 col-span-2 w-full flex justify-end text-[15px]"> <button onclick="submitOrder(this);" class="bg-[rgb(25,144,198);] text-white py-5 px-6 rounded-[7px]" > Continue to shipping</button></div>

@@ -5,7 +5,7 @@ import axiosClient  from "../config.js";
       return axiosClient.post(url, data);
     },
     getByProductId : (data) => {
-        const url = '/comments';
+        const url = '/comments/product';
         return axiosClient.get(url, { params: data });
     }
  }

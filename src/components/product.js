@@ -104,7 +104,7 @@ export default async  function Product(){
                 <div class=" invisible group-hover/item:visible text-white absolute top-[0px] left-[0px] w-full h-full flex justify-center items-center gap-4">
                     <div class=" bg-black rounded-full w-[45px] h-[45px] flex items-center justify-center"><i class="fa fa-heart" aria-hidden="true"></i></div>
                     <div class=" bg-black rounded-full w-[45px] h-[45px] flex items-center justify-center"><i class="fa fa-search" aria-hidden="true"></i></div>
-                    <div onclick="handleAddToCart(this);" data-id="${item.id}" data-name="${item.name}" data-price="${item.price_sale}" data-image="${item.image}" class=" cursor-pointer bg-black rounded-full w-[45px] h-[45px] flex items-center justify-center"><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
+                    <div onclick="handleAddToCart(this);" data-id="${item._id}" data-name="${item.name}" data-price="${item.price_sale}" data-image="${item.image}" class=" cursor-pointer bg-black rounded-full w-[45px] h-[45px] flex items-center justify-center"><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
                 </div>
                 <div class=" absolute top-[0px] left-[0px] rotate-[-17deg] flex justify-center items-center bg-contain h-[65px] w-[65px] text-white bg-[url('https://nou-bakery.myshopify.com/cdn/shop/t/7/assets/badge-2.png?v=147666975709106470991695832898')]">
                     ${Math.ceil(100 - ((item.price_sale * 100) / item.price ))}%
@@ -113,7 +113,7 @@ export default async  function Product(){
                     New
                 </div>
             </div>
-            <a href="/product/${item.id}" data-navigo>
+            <a href="/product/${item._id}" data-navigo>
             <div class="flex flex-col items-center gap-2 mt-10">
                 <div class="text-[18px]">${item.name}</div>
                 <div class="text-[#4e3939;] uppercase text-[11px]">Cake - donut - sweet</div>
@@ -156,7 +156,7 @@ export default async  function Product(){
                          <div class="flex flex-col gap-4">
                             <div class="text-[23px] uppercase tracking-[4px]"><span>categories</span></div>
                             ${dataCategory.map((item, key) => (
-                                `<div onclick="filterByCategory(this);" class="text-[#626262;] text-[15px]" data-id="${item.id}"><span>${item.name} (1)</span></div>`
+                                `<div onclick="filterByCategory(this);" class="text-[#626262;] text-[15px]" data-id="${item._id}"><span>${item.name} (1)</span></div>`
                             )).join("\n")}
                          </div>
                          <div class="flex flex-col gap-4">
@@ -221,7 +221,7 @@ export default async  function Product(){
                                 <div class=" invisible group-hover/item:visible text-white absolute top-[0px] left-[0px] w-full h-full flex justify-center items-center gap-4">
                                     <div class=" bg-black rounded-full w-[45px] h-[45px] flex items-center justify-center"><i class="fa fa-heart" aria-hidden="true"></i></div>
                                     <div class=" bg-black rounded-full w-[45px] h-[45px] flex items-center justify-center"><i class="fa fa-search" aria-hidden="true"></i></div>
-                                    <div onclick="handleAddToCart(this);" data-id="${item.id}" data-name="${item.name}" data-price="${item.price_sale}" data-image="${item.image}" class=" cursor-pointer bg-black rounded-full w-[45px] h-[45px] flex items-center justify-center"><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
+                                    <div onclick="handleAddToCart(this);" data-id="${item._id}" data-name="${item.name}" data-price="${item.price_sale}" data-image="${item.image}" class=" cursor-pointer bg-black rounded-full w-[45px] h-[45px] flex items-center justify-center"><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
                                 </div>
                                 <div class=" absolute top-[0px] left-[0px] rotate-[-17deg] flex justify-center items-center bg-contain h-[65px] w-[65px] text-white bg-[url('https://nou-bakery.myshopify.com/cdn/shop/t/7/assets/badge-2.png?v=147666975709106470991695832898')]">
                                 ${Math.ceil(100 - ((item.price_sale * 100) / item.price ))}%
@@ -230,7 +230,7 @@ export default async  function Product(){
                                     New
                                 </div>
                             </div>
-                            <a href="/product/${item.id}" data-navigo>
+                            <a href="/product/${item._id}" data-navigo>
                             <div class="flex flex-col items-center gap-2 mt-10">
                                 <div class="text-[18px]">${item.name}</div>
                                 <div class="text-[#4e3939;] uppercase text-[11px]">Cake - donut - sweet</div>

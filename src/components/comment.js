@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import commentService from '../service/commentService';
 export default async function Comment(dataItem){
-    const dataComments = await commentService.getByProduct({product_id : dataItem.id, _sort : 'createdAt', _order :  'asc'});
+    const dataComments = await commentService.getByProduct({product_id : dataItem._id});
+    //const dataComments = [];
     window.submitComment = () => {
         
         var currentdate = new Date(); 
@@ -17,12 +18,11 @@ export default async function Comment(dataItem){
         let createdAt = datetime;
 
         let dataComment = {
-           id : uuidv4(),
            name,
            content,
            email,
            createdAt,
-           product_id : dataItem.id
+           product_id : dataItem._id
         }
         commentService.create(dataComment)
         .then((dataComment) => {

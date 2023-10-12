@@ -1,5 +1,8 @@
+import Chat from "./chat";
 export default async function Footer(){
-    return (`<footer> 
+    return (`
+    ${Chat()}
+    <footer>
       <div class=" bg-[#282c2f;] text-white py-[90px]" >
           <div class="container">
               <div class="flex justify-between w-full gap-20">

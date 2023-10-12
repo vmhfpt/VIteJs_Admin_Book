@@ -21,7 +21,15 @@ import axiosClient  from "../config.js";
       return axiosClient.delete(url);
     },
     getProductByFilter : (params) => {
-      const url = '/products';
+      const url = '/products/filter';
+      return axiosClient.get(url, { params: params });
+    },
+    getDetail : (id) => {
+      const url = '/products/detail/' + id;
+      return axiosClient.get(url);
+    },
+    getProductSuggest : (params) => {
+      const url = '/products/product-suggest';
       return axiosClient.get(url, { params: params });
     }
     
