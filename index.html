@@ -8,82 +8,51 @@
     />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <title>Vite App</title>
-    <link rel="stylesheet" href="/output.css" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+
+    <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/assets/css/demo.css" />
+    <!-- <link rel="stylesheet" href="/assets/css/prism.css" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="/assets/vendor/js/helpers.js"></script>
+    <script src="/assets/js/config.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script> 
   </head>
   <body>
+  
     <div id="app"></div>
+    <script src="//cdn.jsdelivr.net/jquery.flot/0.8.3/jquery.flot.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
     <script type="module" src="/main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    
-  </body>
- 
-  <script >
 
-    function getTotalCart(arr){
-      $('.show-quantity-icon').empty();
-      if(arr == null){
-          $('.show-quantity-icon').text(0)
-      }else {
-        var sum = 0;
-        for(var i = 0; i < arr.length; i ++){
-          sum = sum + Number(arr[i].quantity);
-        }
-        $('.show-quantity-icon').text( String(sum));
-      }
-    }
+    <script src="/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/assets/vendor/js/bootstrap.js"></script>
+    <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="/assets/vendor/js/menu.js"></script>
+   
+    <script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
     
-    
-    
-    //getTotalCart(JSON.parse(localStorage.getItem("carts")));
-    
-    
-    function addCart(item, redirect = false){
-                        
-        var shopCart = JSON.parse(localStorage.getItem("carts"));
-        if(shopCart == null){
-            localStorage.setItem("carts", JSON.stringify([item]));
-        }else {
-          function checkArray(arr, id){
-              for(var i = 0; i < arr.length; i ++){
-                if(arr[i].id == id){
-                  return(true);
-                }
-              }
-              return (false);
-            }
-          
-            
-            if(checkArray(shopCart, item.id) == true){
-              var newArr = shopCart.map((value, key) => {
-                    if(value.id == item.id){
-                      return {
-                        ...value,
-                        quantity : (Number((value.quantity)) + item.quantity)
-                      }
-                    }else {
-                        return (value);
-                    }
-              });
-               localStorage.setItem("carts", JSON.stringify(newArr));
-            }else {
-                localStorage.setItem("carts", JSON.stringify([...shopCart, item]));
-            }
-    
-        }
-        getTotalCart(JSON.parse(localStorage.getItem("carts")));
-        if(redirect){
-           window.location.replace("/cart");
-          
-        }
-    }
-    
-    
-          
-             
-    </script>
+    <script src="/assets/js/main.js"></script>
+
+    <script src="/assets/js/dashboards-analytics.js"></script>
+
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
 </html>

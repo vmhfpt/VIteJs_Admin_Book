@@ -1,19 +1,19 @@
-import  CategoryApi from "../api/Category/categoryApi.js"
+import { categoryApi } from "../api/category/categoryApi";
 class CategoryService {
-    async index(params){
-        return await  CategoryApi.getListAll(params);
+    async insert(payload){
+        return await categoryApi.create(payload);
     }
-    async create(data){
-        return await  CategoryApi.addCategory(data);
+    async getAll(){
+        return await categoryApi.getAll();
     }
-    async findOne(params){
-        return await  CategoryApi.getById(params);
+    async findOneById(id){
+        return await categoryApi.findOne(id);
     }
-    async update(data){
-        return await  CategoryApi.updateById(data);
+    async update(id, payload){
+        return await categoryApi.findByIdAndUpdate(id, payload);
     }
     async delete(id){
-        return await CategoryApi.deleteById(id);
+        return await categoryApi.deleteById(id);
     }
 }
 export default new CategoryService();
